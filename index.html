@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PharmaRecipe Trainer — Фармакология</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ─── SIDEBAR NAV ─── -->
+<nav id="sidebar">
+  <div class="logo">
+    <span class="logo-pill">Rx</span>
+    <span class="logo-text">PharmaRecipe<br><em>Trainer</em></span>
+  </div>
+
+  <ul class="nav-links">
+    <li><button class="nav-btn active" data-view="dashboard">
+      <span class="nav-icon">⌂</span><span>Главная</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="flashcards">
+      <span class="nav-icon">🎴</span><span>Флеш-карточки</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="quiz">
+      <span class="nav-icon">❓</span><span>Тест</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="matching">
+      <span class="nav-icon">🔗</span><span>Соответствие</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="write">
+      <span class="nav-icon">✍️</span><span>Написать рецепт</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="exam">
+      <span class="nav-icon">📝</span><span>Экзамен</span>
+    </button></li>
+    <li><button class="nav-btn" data-view="browse">
+      <span class="nav-icon">📚</span><span>Все рецепты</span>
+    </button></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <button id="theme-toggle" title="Переключить тему">
+      <span id="theme-icon">☀️</span>
+    </button>
+    <div class="progress-mini" title="Изучено рецептов">
+      <span id="mini-known">0</span> / 112
+    </div>
+  </div>
+</nav>
+
+<!-- ─── MOBILE HEADER ─── -->
+<header id="mobile-header">
+  <button id="menu-toggle">☰</button>
+  <span class="mobile-title">PharmaRecipe</span>
+  <button id="theme-toggle-m">
+    <span id="theme-icon-m">☀️</span>
+  </button>
+</header>
+
+<!-- ─── MAIN CONTENT ─── -->
+<main id="main-content">
+
+  <!-- ══ DASHBOARD ══ -->
+  <section id="view-dashboard" class="view active">
+    <div class="dashboard-hero">
+      <h1>Подготовка к экзамену<br><em>по фармакологии</em></h1>
+      <p class="hero-sub">112 рецептов · 6 режимов обучения · Статистика прогресса</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-known">0</div>
+        <div class="stat-label">Знаю</div>
+      </div>
+      <div class="stat-card stat-card--warn">
+        <div class="stat-number" id="stat-repeat">0</div>
+        <div class="stat-label">Повторить</div>
+      </div>
+      <div class="stat-card stat-card--accent">
+        <div class="stat-number" id="stat-unseen">112</div>
+        <div class="stat-label">Не изучено</div>
+      </div>
+      <div class="stat-card stat-card--green">
+        <div class="stat-number" id="stat-pct">0%</div>
+        <div class="stat-label">Готовность</div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="main-progress"></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Режимы обучения</h2>
+    <div class="modes-grid">
+      <button class="mode-card" data-view="flashcards">
+        <div class="mode-icon">🎴</div>
+        <div class="mode-name">Флеш-карточки</div>
+        <div class="mode-desc">3D-переворот · показание → рецепт</div>
+      </button>
+      <button class="mode-card" data-view="quiz">
+        <div class="mode-icon">❓</div>
+        <div class="mode-name">Сложный тест</div>
+        <div class="mode-desc">4–5 ловушек · разные типы вопросов</div>
+      </button>
+      <button class="mode-card" data-view="matching">
+        <div class="mode-icon">🔗</div>
+        <div class="mode-name">Соответствие</div>
+        <div class="mode-desc">Соедини препарат с показанием</div>
+      </button>
+      <button class="mode-card" data-view="write">
+        <div class="mode-icon">✍️</div>
+        <div class="mode-name">Написать рецепт</div>
+        <div class="mode-desc">Тренажёр выписывания с подсказками</div>
+      </button>
+      <button class="mode-card" data-view="exam">
+        <div class="mode-icon">📝</div>
+        <div class="mode-name">Экзамен</div>
+        <div class="mode-desc">30 вопросов · таймер · итоговый балл</div>
+      </button>
+      <button class="mode-card" data-view="browse">
+        <div class="mode-icon">📚</div>
+        <div class="mode-name">Все рецепты</div>
+        <div class="mode-desc">Поиск, фильтры, экспорт слабых</div>
+      </button>
+    </div>
+
+    <div class="weak-panel" id="weak-panel" style="display:none">
+      <h3>⚠️ Слабые рецепты</h3>
+      <div id="weak-list" class="weak-chips"></div>
+      <button id="export-weak-btn" class="btn btn-outline">📥 Экспорт слабых в PDF</button>
+    </div>
+  </section>
+
+  <!-- ══ FLASHCARDS ══ -->
+  <section id="view-flashcards" class="view">
+    <div class="view-header">
+      <h2>🎴 Флеш-карточки</h2>
+      <div class="fc-controls">
+        <select id="fc-category" class="select-input"></select>
+        <label class="checkbox-label">
+          <input type="checkbox" id="fc-random"> Случайный порядок
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="fc-weak-only"> Только слабые
+        </label>
+      </div>
+    </div>
+
+    <div class="fc-progress-row">
+      <span id="fc-counter">1 / 112</span>
+      <div class="fc-mini-bar">
+        <div id="fc-mini-fill"></div>
+      </div>
+    </div>
+
+    <div class="card-stage">
+      <div class="flip-card" id="fc-card">
+        <div class="flip-card-inner" id="fc-inner">
+          <div class="flip-card-front">
+            <div class="card-label">ПОКАЗАНИЕ</div>
+            <div class="card-body" id="fc-front-text"></div>
+            <div class="card-category-badge" id="fc-category-badge"></div>
+          </div>
+          <div class="flip-card-back">
+            <div class="card-label">ПРЕПАРАТ И РЕЦЕПТ</div>
+            <div class="card-drug-name" id="fc-drug-name"></div>
+            <pre class="recipe-block" id="fc-recipe"></pre>
+            <div class="card-note" id="fc-note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-actions">
+      <button class="btn btn-secondary" id="fc-show-btn">Показать ответ</button>
+    </div>
+
+    <div class="fc-result-actions" id="fc-result-actions" style="display:none">
+      <button class="btn btn-danger" id="fc-no-btn">✗ Не знаю</button>
+      <button class="btn btn-success" id="fc-yes-btn">✓ Знаю</button>
+    </div>
+
+    <div class="fc-nav-row">
+      <button class="btn btn-ghost" id="fc-prev">← Назад</button>
+      <button class="btn btn-ghost" id="fc-next">Вперёд →</button>
+    </div>
+
+    <div class="fc-done-screen" id="fc-done" style="display:none">
+      <div class="done-icon">🎉</div>
+      <h3>Колода завершена!</h3>
+      <p id="fc-done-stats"></p>
+      <button class="btn btn-primary" id="fc-restart">Начать снова</button>
+    </div>
+  </section>
+
+  <!-- ══ QUIZ ══ -->
+  <section id="view-quiz" class="view">
+    <div class="view-header">
+      <h2>❓ Сложный тест</h2>
+      <div class="quiz-controls">
+        <select id="quiz-category" class="select-input"></select>
+        <select id="quiz-count" class="select-input">
+          <option value="10">10 вопросов</option>
+          <option value="20" selected>20 вопросов</option>
+          <option value="30">30 вопросов</option>
+        </select>
+        <button class="btn btn-primary" id="quiz-start-btn">Начать тест</button>
+      </div>
+    </div>
+
+    <div id="quiz-area" style="display:none">
+      <div class="quiz-meta-row">
+        <span id="quiz-qnum">Вопрос 1 / 20</span>
+        <span id="quiz-score-live">✓ 0 ✗ 0</span>
+        <div class="quiz-type-badge" id="quiz-type-badge"></div>
+      </div>
+
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-question" id="quiz-question"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-feedback" id="quiz-feedback" style="display:none"></div>
+        <button class="btn btn-primary quiz-next-btn" id="quiz-next-btn" style="display:none">
+          Следующий →
+        </button>
+      </div>
+    </div>
+
+    <div id="quiz-result" style="display:none">
+      <div class="result-hero">
+        <div class="result-score-circle" id="result-circle">
+          <span id="result-pct-text">0%</span>
+        </div>
+        <h3 id="result-verdict"></h3>
+        <p id="result-details"></p>
+      </div>
+      <div id="result-breakdown" class="result-breakdown"></div>
+      <button class="btn btn-primary" id="quiz-restart-btn">Пройти ещё раз</button>
+    </div>
+  </section>
+
+  <!-- ══ MATCHING ══ -->
+  <section id="view-matching" class="view">
+    <div class="view-header">
+      <h2>🔗 Соответствие</h2>
+      <div class="matching-controls">
+        <select id="match-category" class="select-input"></select>
+        <button class="btn btn-primary" id="match-start-btn">Начать игру</button>
+      </div>
+    </div>
+
+    <div id="match-area" style="display:none">
+      <div class="match-meta-row">
+        <span id="match-score">Совпадений: 0</span>
+        <span id="match-errors">Ошибок: 0</span>
+        <div id="match-timer-display" class="match-timer">0:00</div>
+      </div>
+      <div class="match-columns">
+        <div class="match-col" id="match-left"></div>
+        <div class="match-col" id="match-right"></div>
+      </div>
+    </div>
+
+    <div id="match-result" style="display:none">
+      <div class="result-hero">
+        <div class="done-icon">🏆</div>
+        <h3>Раунд завершён!</h3>
+        <p id="match-result-text"></p>
+      </div>
+      <button class="btn btn-primary" id="match-restart-btn">Играть снова</button>
+    </div>
+  </section>
+
+  <!-- ══ WRITE RECIPE ══ -->
+  <section id="view-write" class="view">
+    <div class="view-header">
+      <h2>✍️ Написать рецепт</h2>
+      <div class="write-controls">
+        <select id="write-category" class="select-input"></select>
+        <button class="btn btn-secondary" id="write-random-btn">🎲 Случайный</button>
+      </div>
+    </div>
+
+    <div class="write-area" id="write-area">
+      <div class="write-indication" id="write-indication">
+        <span class="write-label">Показание:</span>
+        <span id="write-ind-text"></span>
+      </div>
+      <div class="write-hint-row">
+        <span class="write-label">Препарат:</span>
+        <span id="write-drug-hint" class="hint-hidden">???</span>
+        <button class="btn btn-ghost btn-sm" id="write-hint-btn">Подсказка</button>
+      </div>
+
+      <textarea id="write-textarea" class="recipe-textarea" spellcheck="false"
+        placeholder="Rp.: ...
+D.t.d. N. ...
+S. ..."></textarea>
+
+      <div class="write-btn-row">
+        <button class="btn btn-primary" id="write-check-btn">✓ Проверить</button>
+        <button class="btn btn-ghost" id="write-show-btn">Показать ответ</button>
+        <button class="btn btn-ghost" id="write-next-btn">Следующий →</button>
+      </div>
+
+      <div id="write-feedback" class="write-feedback" style="display:none">
+        <div class="feedback-label" id="write-fb-label"></div>
+        <pre class="recipe-block" id="write-correct-recipe"></pre>
+        <div class="write-note" id="write-note"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EXAM ══ -->
+  <section id="view-exam" class="view">
+    <div class="view-header">
+      <h2>📝 Экзамен</h2>
+    </div>
+
+    <div id="exam-setup">
+      <div class="exam-setup-card">
+        <h3>Параметры экзамена</h3>
+        <label>Количество вопросов:
+          <select id="exam-count" class="select-input">
+            <option value="25">25</option>
+            <option value="30" selected>30</option>
+          </select>
+        </label>
+        <label>Время (минут):
+          <select id="exam-time" class="select-input">
+            <option value="20">20</option>
+            <option value="30" selected>30</option>
+            <option value="45">45</option>
+          </select>
+        </label>
+        <label>Раздел:
+          <select id="exam-category" class="select-input"></select>
+        </label>
+        <button class="btn btn-primary btn-large" id="exam-start-btn">🚀 Начать экзамен</button>
+      </div>
+    </div>
+
+    <div id="exam-area" style="display:none">
+      <div class="exam-header-bar">
+        <span id="exam-qnum">1 / 30</span>
+        <div class="exam-timer-box" id="exam-timer">30:00</div>
+        <span id="exam-score-live">✓ 0 ✗ 0</span>
+      </div>
+      <div class="quiz-card" id="exam-card">
+        <div class="quiz-question" id="exam-question"></div>
+        <div class="quiz-options" id="exam-options"></div>
+        <div class="quiz-feedback" id="exam-feedback" style="display:none"></div>
+        <button class="btn btn-primary quiz-next-btn" id="exam-next-btn" style="display:none">
+          Следующий →
+        </button>
+      </div>
+    </div>
+
+    <div id="exam-result" style="display:none">
+      <div class="result-hero">
+        <div class="result-score-circle" id="exam-result-circle">
+          <span id="exam-result-pct">0%</span>
+        </div>
+        <h3 id="exam-verdict"></h3>
+        <p id="exam-details"></p>
+      </div>
+      <div id="exam-breakdown" class="result-breakdown"></div>
+      <button class="btn btn-primary" id="exam-restart-btn">Новый экзамен</button>
+    </div>
+  </section>
+
+  <!-- ══ BROWSE ══ -->
+  <section id="view-browse" class="view">
+    <div class="view-header">
+      <h2>📚 Все рецепты</h2>
+      <div class="browse-controls">
+        <input type="search" id="browse-search" class="search-input" placeholder="Поиск по препарату, показанию..." />
+        <select id="browse-category" class="select-input"></select>
+        <button id="browse-export-btn" class="btn btn-outline">📥 Экспорт слабых</button>
+      </div>
+    </div>
+    <div id="browse-count" class="browse-count"></div>
+    <div id="browse-grid" class="browse-grid"></div>
+  </section>
+
+</main>
+
+<!-- ─── RECIPE MODAL ─── -->
+<div id="recipe-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-label">ПРЕПАРАТ</div>
+    <div class="modal-drug" id="modal-drug"></div>
+    <div class="modal-latin" id="modal-latin"></div>
+    <div class="modal-category-tag" id="modal-cat"></div>
+    <hr class="modal-divider" />
+    <div class="modal-label">ПОКАЗАНИЕ</div>
+    <div class="modal-indication" id="modal-indication"></div>
+    <hr class="modal-divider" />
+    <div class="modal-label">РЕЦЕПТ</div>
+    <pre class="recipe-block recipe-block--modal" id="modal-recipe"></pre>
+    <hr class="modal-divider" />
+    <div class="modal-note" id="modal-note"></div>
+    <div class="modal-actions">
+      <button class="btn btn-success" id="modal-know-btn">✓ Знаю</button>
+      <button class="btn btn-danger" id="modal-repeat-btn">✗ Повторить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
